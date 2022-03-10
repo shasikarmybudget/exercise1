@@ -27,25 +27,40 @@ func add_user(w http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 
 	if err != nil {
-		//Failed to read response.
 		panic(err)
 	}
 
 	for name, headers := range req.Header {
-		//fmt.Println(name, headers)
-		// for _, h := range headers {
-		// 	fmt.Fprintf(w, "%v: %v\n", name, h)
-		// }
-
 		if name == "User_id" {
 			user_id, _ = strconv.ParseUint(headers[0], 10, 64)
 		}
-
 	}
 
-	//fmt.Println("User_id: ", user_id)
+	userStr := string(body)
+	//fmt.Println("Response: ", userStr)
+	var user User
+	json.Unmarshal([]byte(userStr), &user)
 
-	//Convert bytes to String and print
+	users_map[user_id] = user
+	fmt.Println(users_map)
+
+}
+
+func modify_user(w http.ResponseWriter, req *http.Request) {
+
+	var user_id uint64
+	body, err := ioutil.ReadAll(req.Body)
+
+	if err != nil {
+		panic(err)
+	}
+
+	for name, headers := range req.Header {
+		if name == "User_id" {
+			user_id, _ = strconv.ParseUint(headers[0], 10, 64)
+		}
+	}
+
 	userStr := string(body)
 	//fmt.Println("Response: ", userStr)
 	var user User
@@ -63,5 +78,6 @@ func main() {
 	//usersArr := make(map[int]User)
 
 	http.HandleFunc("/users", add_user)
+	http.HandleFunc("/modify", modify_user)
 	http.ListenAndServe(":8090", nil)
 }
