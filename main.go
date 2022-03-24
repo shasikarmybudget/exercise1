@@ -128,7 +128,7 @@ func getTimestamp() int64 {
 
 func wrapFunc(users map[uint64]UserData) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		fmt.Println("wrapFunc called")
+		//fmt.Println("wrapFunc called")
 		var user_id uint64
 		var modify_req ModifyData
 		//var temp_user UserData
@@ -232,11 +232,12 @@ func main() {
 	//fmt.Println(getTimestamp())
 
 	users[user.Id] = user
-	fmt.Println(users)
+	//fmt.Println(users)
 
-	//http.HandleFunc("/modify", wrapFunc(users))
-	//http.ListenAndServe(":8090", nil)
+	http.HandleFunc("/modify", wrapFunc(users))
+	server_Err := http.ListenAndServe(":8091", nil)
+	fmt.Println(server_Err)
 
-	fmt.Println("FLAG1")
+	//fmt.Println("FLAG1")
 
 }
