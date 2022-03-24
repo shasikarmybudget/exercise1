@@ -235,8 +235,8 @@ func main() {
 	//fmt.Println(users)
 
 	http.HandleFunc("/modify", wrapFunc(users))
-	server_Err := http.ListenAndServe(":8091", nil)
-	fmt.Println(server_Err)
+	server_err := http.ListenAndServe(":8091", nil)
+	fmt.Println(server_err)
 
 	//fmt.Println("FLAG1")
 
